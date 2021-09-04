@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="309.95187mm"
+   height="128mm"
+   viewBox="0 0 309.95187 128"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1 (c4e8f9ed74, 2021-05-24)"
+   sodipodi:docname="logotype-white.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#999999"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="0.81037718"
+     inkscape:cx="239.3947"
+     inkscape:cy="393.02686"
+     inkscape:window-width="1115"
+     inkscape:window-height="1021"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer2" />
+  <defs
+     id="defs2">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient932">
+      <stop
+         style="stop-color:#55679e;stop-opacity:1"
+         offset="0"
+         id="stop928" />
+      <stop
+         style="stop-color:#dd2a2b;stop-opacity:1"
+         offset="1"
+         id="stop930" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient932"
+       id="linearGradient934"
+       x1="128"
+       y1="0"
+       x2="0"
+       y2="128"
+       gradientUnits="userSpaceOnUse" />
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath4713">
+      <circle
+         style="opacity:1;fill:#e5e5ee;fill-opacity:1;stroke-width:18"
+         id="circle4715"
+         cx="91.555847"
+         cy="2.6114225"
+         r="32.000004" />
+    </clipPath>
+    <mask
+       maskUnits="userSpaceOnUse"
+       id="mask1292">
+      <g
+         fill="#3e88ed"
+         fill-rule="nonzero"
+         stroke="none"
+         stroke-width="0"
+         stroke-linecap="butt"
+         stroke-linejoin="miter"
+         stroke-miterlimit="10"
+         stroke-dasharray="none"
+         stroke-dashoffset="0"
+         font-family="none"
+         font-weight="none"
+         font-size="none"
+         text-anchor="none"
+         style="mix-blend-mode:normal;fill:#ffffff"
+         id="g1296"
+         transform="matrix(1.0666667,0,0,1.0666667,-36.964615,-274.84343)">
+        <path
+           d="m 61.354328,377.66571 c -22.250002,0 -26.700002,-8.9 -26.700002,-26.7 v -66.6 c 0,-22.25 8.9,-26.7 26.700002,-26.7 h 66.600002 c 22.25,0 26.7,8.9 26.7,26.7 v 66.6 c 0,22.25 -8.9,26.7 -26.7,26.7 z"
+           id="path1294"
+           style="fill:#ffffff" />
+      </g>
+    </mask>
+  </defs>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="backdrop">
+    <g
+       fill="#3e88ed"
+       fill-rule="nonzero"
+       stroke="none"
+       stroke-width="0"
+       stroke-linecap="butt"
+       stroke-linejoin="miter"
+       stroke-miterlimit="10"
+       stroke-dasharray="none"
+       stroke-dashoffset="0"
+       font-family="none"
+       font-weight="none"
+       font-size="none"
+       text-anchor="none"
+       style="mix-blend-mode:normal;fill:#ffffff"
+       id="g1296-5"
+       transform="matrix(1.0666667,0,0,1.0666667,-36.964615,-274.84343)">
+      <path
+         d="m 61.354328,377.66571 c -22.250002,0 -26.700002,-8.9 -26.700002,-26.7 v -66.6 c 0,-22.25 8.9,-26.7 26.700002,-26.7 h 66.600002 c 22.25,0 26.7,8.9 26.7,26.7 v 66.6 c 0,22.25 -8.9,26.7 -26.7,26.7 z"
+         id="path1294-6"
+         style="fill:#ffffff" />
+    </g>
+  </g>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="opacity:0.8;fill:url(#linearGradient934);fill-opacity:1;stroke-width:18"
+       id="rect846"
+       width="128"
+       height="128"
+       x="0"
+       y="0"
+       mask="url(#mask1292)" />
+    <circle
+       style="opacity:0.5;fill:#e5e5ee;fill-opacity:1;stroke-width:18"
+       id="path4094-3"
+       cx="80"
+       cy="80"
+       r="32" />
+    <path
+       id="path4094-5"
+       style="opacity:0.75;fill:#1a1a1a;fill-opacity:1;stroke-width:18"
+       d="M 48.000113,16 A 31.999999,31.999999 0 0 0 16,47.9996 31.999999,31.999999 0 0 0 48.000113,79.99971 31.999999,31.999999 0 0 1 80.000228,47.9996 31.999999,31.999999 0 0 0 48.000113,16 Z" />
+    <circle
+       style="opacity:0.5;fill:#53b11b;fill-opacity:1;stroke-width:18"
+       id="path4094-6"
+       cx="59.555843"
+       cy="-29.388578"
+       r="32"
+       clip-path="url(#clipPath4713)"
+       transform="translate(-11.555843,77.388581)" />
+    <text
+       xml:space="preserve"
+       style="font-size:96px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke-width:0.264583"
+       x="156.92799"
+       y="87.183998"
+       id="text16653"><tspan
+         sodipodi:role="line"
+         id="tspan16651"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:96px;font-family:'Proxima Nova';-inkscape-font-specification:'Proxima Nova Bold';fill:#ffffff;fill-opacity:1;stroke-width:0.264583"
+         x="156.92799"
+         y="87.183998">oos</tspan></text>
+  </g>
+</svg>
