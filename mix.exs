@@ -33,6 +33,7 @@ defmodule Acaster.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:rustler, "~> 0.22.0"},
       {:argon2_elixir, "~> 2.0"},
       {:phoenix, "~> 1.6.0-rc.0", override: true},
       {:phoenix_ecto, "~> 4.4"},
