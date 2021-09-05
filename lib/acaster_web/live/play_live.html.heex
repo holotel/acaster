@@ -1,0 +1,48 @@
+<div class="flex flex-col">
+  <div class="min-w-full md:min-w-[32rem] md:resize-x overflow-auto max-w-full md:max-w-[calc(100vh-6rem)] my-2">
+    <div class="square">
+      <div class="p-3 bg-gray-900 rounded-lg">
+        <div class="aspect-w-1 aspect-h-1">
+          <div class="grid grid-rows-8 grid-cols-8 gap-0.5">
+            <%= for i <- 0..(8 - 1) do %>
+                <%= for j <- 0..(8 - 1) do %>
+                    <div class="bg-green-800">
+                      <picture>
+                        <svg
+                          width="100%"
+                          height="100%"
+                          viewBox="-128 -128 256 256"
+                          version="1.1"
+                          xmlns="http://www.w3.org/2000/svg"
+                          alt="cell"
+                          >
+                          <!-- {#if disc} -->
+                          <!-- 	<circle cx="0" cy="0" r={128 - 16} fill={disc == 'b' ? '#E5E7EB' : '#111827'} /> -->
+                          <!-- {/if} -->
+
+                          <!-- {#if label} -->
+                          <!-- 	<text -->
+                          <!-- 		x="0" -->
+                          <!-- 		y="0" -->
+                          <!-- 		dominant-baseline="central" -->
+                          <!-- 		text-anchor="middle" -->
+                          <!-- 		font-size="84" -->
+                          <!-- 		font-weight="900" -->
+                          <!-- 		font-family="Lato" -->
+                          <!-- 		fill="#707070DD" -->
+                          <!-- 	> -->
+                            <!-- 		{label} -->
+                            <!-- 	</text> -->
+                          <!-- {/if} -->
+                        </svg>
+                      </picture>
+                    </div>
+                    <% end %>
+                    <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

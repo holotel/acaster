@@ -21,6 +21,7 @@ defmodule AcasterWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+    live "/play", PlayLive
   end
 
   # Other scopes may use custom stacks.
