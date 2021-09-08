@@ -2,7 +2,7 @@ defmodule Bitboard do
   use Rustler, otp_app: :acaster, crate: "bitboard"
   use Bitwise
 
-  defstruct blacks: 0, whites: 0
+  defstruct [:blacks, :whites]
 
   def empty(), do: :erlang.nif_error(:nif_not_loaded)
   def standard(), do: :erlang.nif_error(:nif_not_loaded)
@@ -24,11 +24,45 @@ defmodule Bitboard do
   def moves_for(b, :black), do: moves_for_black(b)
   def moves_for(b, :white), do: moves_for_white(b)
 
-  def spread(0), do: []
-  def spread(b), do: [b &&& -b | spread(bxor(b, b &&& -b))]
+  def is_legal_move_black(_board, _pos), do: :erlang.nif_error(:nif_not_loaded)
+  def is_legal_move_white(_board, _pos), do: :erlang.nif_error(:nif_not_loaded)
+  def legal_move?(b, p, :black), do: is_legal_move_black(b, p)
+  def legal_move?(b, p, :white), do: is_legal_move_white(b, p)
 
-  def msb_p(1), do: 0
-  def msb_p(v), do: 1 + msb_p(div(v, 2))
-  def to_coor(v), do: {div(msb_p(v), 8), rem(msb_p(v), 8)}
-  def from_coor({r, c}), do: 1 <<< (8 * r + c)
+  def spread(0), do: []
+  def spread(b), do: [b &&& -b | spread(b &&& b - 1)]
+
+  def points(b), do: %{black: length(spread(b.blacks)), white: length(spread(b.whites))}
+  def points(b, :black), do: points(b).black
+  def points(b, :white), do: points(b).white
+
+  def to_string(b, t) do
+    unfold = fn b -> Stream.unfold(b, fn v -> {rem(v, 2), div(v, 2)} end) |> Enum.take(64) end
+
+    top = "   A  B  C  D  E  F  G  H "
+
+    rest =
+      Enum.zip(
+        Enum.zip(unfold.(b.blacks), unfold.(b.whites)),
+        Enum.zip(unfold.(Bitboard.moves_for(b, :black)), unfold.(Bitboard.moves_for(b, :white)))
+      )
+      |> Enum.map(fn
+        {{1, 0}, {0, 0}} -> " ■ "
+        {{0, 1}, {0, 0}} -> " □ "
+        {{0, 0}, {1, _}} when t == :black -> " ▪ "
+        {{0, 0}, {_, 1}} when t == :white -> " ▫ "
+        _ -> " · "
+      end)
+      |> Enum.chunk_every(8)
+      |> Enum.map(&Enum.join/1)
+      |> Enum.zip(1..8)
+      |> Enum.map(fn {r, i} -> "#{i} #{r}" end)
+      |> Enum.join("\n")
+
+    "#{top}\n#{rest}\n"
+  end
+end
+
+defimpl String.Chars, for: Bitboard do
+  def to_string(b), do: b |> Bitboard.to_string(nil)
 end

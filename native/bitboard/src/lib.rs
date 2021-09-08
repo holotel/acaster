@@ -103,6 +103,21 @@ fn moves_for_white(board: Board) -> u64 {
     moves_for(board, Stone::White)
 }
 
+fn is_legal_move(board: Board, pos: u64, s: Stone) -> bool {
+    let board: OthelloBoard = board.into();
+    board.is_legal_move(s, pos)
+}
+
+#[rustler::nif]
+fn is_legal_move_black(board: Board, pos: u64) -> bool {
+    is_legal_move(board, pos, Stone::Black)
+}
+
+#[rustler::nif]
+fn is_legal_move_white(board: Board, pos: u64) -> bool {
+    is_legal_move(board, pos, Stone::White)
+}
+
 rustler::init!(
     "Elixir.Bitboard",
     [
@@ -115,5 +130,7 @@ rustler::init!(
         remove,
         moves_for_black,
         moves_for_white,
+        is_legal_move_black,
+        is_legal_move_white,
     ]
 );

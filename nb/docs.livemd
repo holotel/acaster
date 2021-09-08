@@ -1,0 +1,52 @@
+# Documentation
+
+## Bitboard
+
+```elixir
+use Bitwise
+import Bitboard.Bit
+board = Bitboard.standard()
+IO.puts(board)
+```
+
+```elixir
+{:ok, board} = board |> Bitboard.emplace(~b"f5", :black)
+IO.puts(board)
+```
+
+```elixir
+board |> Bitboard.moves_for(:white) |> Bitboard.spread() |> Enum.map(&to_str/1)
+```
+
+```elixir
+{:ok, board} = board |> Bitboard.emplace(~b"F4", :white)
+{:ok, board} = board |> Bitboard.emplace(~b"E3", :black)
+IO.puts(board)
+```
+
+## GameState
+
+```elixir
+play_seq =
+  ~B(F5D6C4D3C3F4F6F3E6E7C6G6E2D7F8C5E3C7D8E8F7G5B5C8B8B4B6A5A3A4A6C2D2B3A2F1E1B7D1F2B2A1G2C1B1G3H6H7H5A7H2G8H8G4A8G7H4H3G1H1)
+```
+
+```elixir
+alias Acaster.GameState
+alias Acaster.GameState.NotStartedState
+alias Acaster.Game.TimeControl
+alias Acaster.Game.NoClock
+
+gs = %NotStartedState{
+  board: Bitboard.standard(),
+  tc: %TimeControl{black: %NoClock{}, white: %NoClock{}},
+  first: :black
+}
+
+IO.puts(gs)
+
+history =
+  play_seq
+  |> Enum.scan(gs |> GameState.start(), &GameState.emplace(&2, &1))
+  |> Enum.map(&IO.puts/1)
+```
