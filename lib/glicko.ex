@@ -7,8 +7,6 @@ defmodule Glicko do
 
   def rating(_g), do: :erlang.nif_error(:nif_not_loaded)
   def stdev(_g), do: :erlang.nif_error(:nif_not_loaded)
-
-  def divvy(_a, _b), do: :erlang.nif_error(:nif_not_loaded)
 end
 
 defmodule Glicko.Match do

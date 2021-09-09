@@ -178,9 +178,4 @@ fn stdev(g: Glicko) -> f64 {
     g.phi * GK_MAGIC
 }
 
-#[rustler::nif]
-fn divvy(a: f64, b: f64) -> f64 {
-    a / b
-}
-
-rustler::init!("Elixir.Glicko", [simple, update, rating, stdev, divvy]);
+rustler::init!("Elixir.Glicko", [simple, update, rating, stdev]);

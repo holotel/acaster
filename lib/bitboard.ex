@@ -39,9 +39,7 @@ defmodule Bitboard do
   def to_string(b, t) do
     unfold = fn b -> Stream.unfold(b, fn v -> {rem(v, 2), div(v, 2)} end) |> Enum.take(64) end
 
-    top = "   A  B  C  D  E  F  G  H "
-
-    rest =
+    board =
       Enum.zip(
         Enum.zip(unfold.(b.blacks), unfold.(b.whites)),
         Enum.zip(unfold.(Bitboard.moves_for(b, :black)), unfold.(Bitboard.moves_for(b, :white)))
@@ -59,7 +57,7 @@ defmodule Bitboard do
       |> Enum.map(fn {r, i} -> "#{i} #{r}" end)
       |> Enum.join("\n")
 
-    "#{top}\n#{rest}\n"
+    "   A  B  C  D  E  F  G  H \n#{board}\n"
   end
 end
 
