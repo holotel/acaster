@@ -50,3 +50,13 @@ history =
   |> Enum.scan(gs |> GameState.start(), &GameState.emplace(&2, &1))
   |> Enum.map(&IO.puts/1)
 ```
+
+## Glicko
+
+```elixir
+r = Glicko.simple(1500.0, 200.0)
+a = %Glicko.Match{o: Glicko.simple(1400.0, 30.0), r: :win}
+b = %Glicko.Match{o: Glicko.simple(1550.0, 100.0), r: :loss}
+c = %Glicko.Match{o: Glicko.simple(1700.0, 300.0), r: :loss}
+s = r |> Glicko.update([a, b, c])
+```
