@@ -323,6 +323,7 @@ defmodule Acaster.AccountsTest do
       # Creating the same token for another user should fail
       assert_raise Ecto.ConstraintError, fn ->
         Repo.insert!(%UserToken{
+          id: MonoID.gen(),
           token: user_token.token,
           user_id: user_fixture().id,
           context: "session"

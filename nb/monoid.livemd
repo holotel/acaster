@@ -1,0 +1,73 @@
+# MonoID
+
+## SeqMonoID
+
+```elixir
+t = System.os_time(:nanosecond)
+{sec, subsec} = {div(t, 1_000_000_000), rem(t, 1_000_000_000)}
+```
+
+```elixir
+unixts = <<sec::32>>
+```
+
+```elixir
+0b10
+```
+
+```elixir
+<<sub_a::12, sub_b::12, sub_c::6>> = <<subsec::30>>
+<<sec::32, 0::4, sub_a::12, 0b0111::4, sub_b::12, 0b10::2, sub_c::6>>
+```
+
+```elixir
+defmodule SeqMonoID do
+  use GenServer
+
+  @impl true
+  def init(:ok) do
+    {:ok, {0, 0}}
+  end
+
+  def gen_id({now, seq}) do
+    {sec, subsec} = {div(now, 1_000_000_000), rem(now, 1_000_000_000)}
+    <<sub_a::12, sub_b::12, sub_c::6>> = <<subsec::30>>
+    clock = <<sec::36, sub_a::12, 0b0111::4, sub_b::12, 0b10::2, sub_c::6, seq::8>>
+    entropy = :crypto.strong_rand_bytes(6)
+    clock <> entropy
+  end
+
+  @impl true
+  def handle_call(:gen, _from, {last, seq}) do
+    now = System.os_time(:nanosecond)
+
+    case now <= last do
+      true -> {:reply, gen_id({now, seq + 1}), {last, seq + 1}}
+      false -> {:reply, gen_id({now, 0}), {now, 0}}
+    end
+  end
+end
+```
+
+```elixir
+defmodule MonoID do
+  def gen(:raw) do
+    now = System.os_time(:nanosecond)
+    {sec, subsec} = {div(now, 1_000_000_000), rem(now, 1_000_000_000)}
+    <<sub_a::12, sub_b::12, sub_c::6>> = <<subsec::30>>
+    clock = <<sec::36, sub_a::12, 0b0111::4, sub_b::12, 0b10::2, sub_c::6>>
+    entropy = :crypto.strong_rand_bytes(7)
+    clock <> entropy
+  end
+end
+```
+
+```elixir
+<<a::32, b::16, c::16, d::16, e::48>> = MonoID.gen(:raw)
+
+Base.encode16(<<a::32>>) <>
+  "-" <>
+  Base.encode16(<<b::16>>) <>
+  "-" <>
+  Base.encode16(<<c::16>>) <> "-" <> Base.encode16(<<d::16>>) <> "f-" <> Base.encode16(<<e::48>>)
+```

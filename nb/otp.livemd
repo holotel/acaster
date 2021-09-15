@@ -1,0 +1,98 @@
+# OTP
+
+## DynamicSupervisor
+
+```elixir
+defmodule GameSupervisor do
+  use DynamicSupervisor
+
+  def start_link(state) do
+    DynamicSupervisor.start_link(__MODULE__, state, name: __MODULE__)
+  end
+
+  def init(_state) do
+    DynamicSupervisor.init(strategy: :one_for_one)
+  end
+
+  def register(name) do
+    DynamicSupervisor.start_child(__MODULE__, {Ring, name})
+  end
+end
+```
+
+```elixir
+GameSupervisor.start_link(:ok)
+```
+
+```elixir
+defmodule Ring do
+  use GenStateMachine
+
+  alias __MODULE__
+
+  def start_link(name) do
+    IO.puts(name)
+    GenStateMachine.start(__MODULE__, {:a, nil})
+  end
+
+  def handle_event({:call, from}, :get, s, data) do
+    {:keep_state_and_data, [{:reply, from, {s, data}}]}
+  end
+
+  def handle_event(:cast, {:set, v}, s, _data) do
+    {:next_state, s, v}
+  end
+
+  def handle_event(:cast, :go, :a, data) do
+    {:next_state, :b, data}
+  end
+
+  def handle_event(:cast, :go, :b, data) do
+    {:next_state, :c, data}
+  end
+
+  def handle_event(:cast, :go, :c, data) do
+    {:next_state, :a, data}
+  end
+end
+```
+
+```elixir
+{:ok, machine} = Ring.start_link(:ok)
+```
+
+```elixir
+machine |> GenStateMachine.call(:get)
+machine |> GenStateMachine.cast(:go)
+machine |> GenStateMachine.call(:get)
+```
+
+```elixir
+Swarm.register_name(
+  :huhuhu,
+  DynamicSupervisor,
+  :start_child,
+  [GameSupervisor, {Ring, "bwahaha"}]
+)
+```
+
+```elixir
+GenServer.call({:via, :swarm, :huhuhu}, :get)
+```
+
+```elixir
+Swarm.register_name(
+  "yoten",
+  DynamicSupervisor,
+  :start_child,
+  [GameSupervisor, {Ring, "yoten"}]
+)
+```
+
+```elixir
+GenServer.cast({:via, :swarm, "yoten"}, :go)
+```
+
+```elixir
+GenServer.call({:via, :swarm, "yoten"}, :get)
+```

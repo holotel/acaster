@@ -12,7 +12,7 @@ defmodule Acaster.Accounts.UserToken do
   @change_email_validity_in_days 7
   @session_validity_in_days 60
 
-  @primary_key {:id, :binary_id, autogenerate: true}
+  @primary_key {:id, :binary_id, autogenerate: false}
   @foreign_key_type :binary_id
   schema "users_tokens" do
     field :token, :binary
@@ -44,7 +44,14 @@ defmodule Acaster.Accounts.UserToken do
   """
   def build_session_token(user) do
     token = :crypto.strong_rand_bytes(@rand_size)
-    {token, %Acaster.Accounts.UserToken{token: token, context: "session", user_id: user.id}}
+
+    {token,
+     %Acaster.Accounts.UserToken{
+       id: MonoID.gen(),
+       token: token,
+       context: "session",
+       user_id: user.id
+     }}
   end
 
   @doc """
@@ -88,6 +95,7 @@ defmodule Acaster.Accounts.UserToken do
 
     {Base.url_encode64(token, padding: false),
      %Acaster.Accounts.UserToken{
+       id: MonoID.gen(),
        token: hashed_token,
        context: context,
        sent_to: sent_to,

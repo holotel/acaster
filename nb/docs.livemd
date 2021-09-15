@@ -27,8 +27,7 @@ IO.puts(board)
 ## GameState
 
 ```elixir
-play_seq =
-  ~B(F5D6C4D3C3F4F6F3E6E7C6G6E2D7F8C5E3C7D8E8F7G5B5C8B8B4B6A5A3A4A6C2D2B3A2F1E1B7D1F2B2A1G2C1B1G3H6H7H5A7H2G8H8G4A8G7H4H3G1H1)
+play_seq = ~B(D3C5D6E3B4C3D2C4F4)
 ```
 
 ```elixir
@@ -45,18 +44,62 @@ gs = %NotStartedState{
 
 IO.puts(gs)
 
-history =
-  play_seq
-  |> Enum.scan(gs |> GameState.start(), &GameState.emplace(&2, &1))
-  |> Enum.map(&IO.puts/1)
+play_seq
+|> Enum.scan(gs |> GameState.start(), &GameState.emplace(&2, &1))
+|> Enum.each(&IO.puts/1)
 ```
 
 ## Glicko
 
 ```elixir
+%Glicko.Match{o: Glicko.simple(1400.0, 30.0), r: :win}
+```
+
+```elixir
 r = Glicko.simple(1500.0, 200.0)
-a = %Glicko.Match{o: Glicko.simple(1400.0, 30.0), r: :win}
-b = %Glicko.Match{o: Glicko.simple(1550.0, 100.0), r: :loss}
-c = %Glicko.Match{o: Glicko.simple(1700.0, 300.0), r: :loss}
-s = r |> Glicko.update([a, b, c])
+
+r =
+  r
+  |> Glicko.update([
+    %Glicko.Match{o: Glicko.simple(1400.0, 30.0), r: :win},
+    %Glicko.Match{o: Glicko.simple(1550.0, 100.0), r: :loss},
+    %Glicko.Match{o: Glicko.simple(1700.0, 300.0), r: :loss}
+  ])
+
+IO.puts(Glicko.rating(r))
+IO.puts(Glicko.stdev(r))
+```
+
+```elixir
+1..10 |> Enum.reduce(MapSet.new(), &MapSet.put(&2, &1))
+```
+
+```elixir
+alias Acaster.MatcherServer
+{:ok, ms} = MatcherServer.start_link([])
+```
+
+```elixir
+ms |> MatcherServer.register(UUID.uuid4())
+ms |> MatcherServer.list()
+```
+
+```elixir
+ms
+|> MatcherServer.unregister(%Acaster.MatcherServer.Ticket{
+  id: "d2e7c87c-c639-4a30-9db2-a5892c887386",
+  player: "5b0db865-e2d9-40c9-b832-7c90fd5d5fa8"
+})
+```
+
+```elixir
+ms |> MatcherServer.list()
+```
+
+```elixir
+ms |> MatcherServer.run_wave()
+```
+
+```elixir
+ms |> MatcherServer.list()
 ```

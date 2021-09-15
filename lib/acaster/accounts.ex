@@ -75,7 +75,7 @@ defmodule Acaster.Accounts do
 
   """
   def register_user(attrs) do
-    %User{}
+    %User{id: MonoID.gen()}
     |> User.registration_changeset(attrs)
     |> Repo.insert()
   end

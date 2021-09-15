@@ -1,7 +1,7 @@
 defmodule Acaster.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
-  @primary_key {:id, :binary_id, autogenerate: true}
+  @primary_key {:id, :binary_id, autogenerate: false}
   @foreign_key_type :binary_id
   schema "users" do
     field :email, :string
@@ -32,6 +32,7 @@ defmodule Acaster.Accounts.User do
   def registration_changeset(user, attrs, opts \\ []) do
     user
     |> cast(attrs, [:email, :password])
+    |> validate_required([:id])
     |> validate_email()
     |> validate_password(opts)
   end

@@ -4,9 +4,12 @@ defmodule Acaster.Application do
   @moduledoc false
 
   use Application
+  require Logger
 
   @impl true
   def start(_type, _args) do
+    topologies = Application.get_env(:libcluster, :topologies) || []
+
     children = [
       # Start the Ecto repository
       Acaster.Repo,
@@ -14,10 +17,13 @@ defmodule Acaster.Application do
       AcasterWeb.Telemetry,
       # Start the PubSub system
       {Phoenix.PubSub, name: Acaster.PubSub},
+      # Setup clustering
+      {Cluster.Supervisor, [topologies, [name: Acaster.ClusterSupervisor]]},
+      # Setup game supervisor
+      {DynamicSupervisor, name: Acaster.GameSupervisor, strategy: :one_for_one},
       # Start the Endpoint (http/https)
       AcasterWeb.Endpoint
       # Start a worker by calling: Acaster.Worker.start_link(arg)
-      # {Acaster.Worker, arg}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
