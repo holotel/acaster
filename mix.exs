@@ -52,8 +52,7 @@ defmodule Acaster.MixProject do
       {:swarm, "~> 3.4"},
       {:swoosh, "~> 1.3"},
       {:telemetry_metrics, "~> 0.6"},
-      {:telemetry_poller, "~> 1.0"},
-      {:zigler, "~> 0.7.3", runtime: false}
+      {:telemetry_poller, "~> 1.0"}
     ]
   end
 

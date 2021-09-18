@@ -5,24 +5,22 @@ defmodule Acaster.Game.TimeControl do
   defstruct([:black, :white])
 
   def start(%TimeControl{:black => b, :white => w}, :black) do
-    {:ok, b, _} = b |> Clock.start()
-    %TimeControl{black: b, white: w}
+    {:ok, b, rem} = b |> Clock.start()
+    {:ok, %TimeControl{black: b, white: w}, rem}
   end
 
   def start(%TimeControl{:black => b, :white => w}, :white) do
-    {:ok, w, _} = w |> Clock.start()
-    %TimeControl{black: b, white: w}
+    {:ok, w, rem} = w |> Clock.start()
+    {:ok, %TimeControl{black: b, white: w}, rem}
   end
 
   def stop(%TimeControl{:black => b, :white => w}, :black) do
-    {:ok, b, _} = b |> Clock.stop()
-    %TimeControl{black: b, white: w}
+    {:ok, b, taken} = b |> Clock.stop()
+    {:ok, %TimeControl{black: b, white: w}, taken}
   end
 
   def stop(%TimeControl{:black => b, :white => w}, :white) do
-    {:ok, w, _} = w |> Clock.stop()
-    %TimeControl{black: b, white: w}
+    {:ok, w, taken} = w |> Clock.stop()
+    {:ok, %TimeControl{black: b, white: w}, taken}
   end
-
-  def flag?(%TimeControl{:black => b, :white => w}), do: b |> Clock.flag?() or w |> Clock.flag?()
 end

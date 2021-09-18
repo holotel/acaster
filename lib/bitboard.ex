@@ -7,15 +7,15 @@ defmodule Bitboard do
   def empty(), do: :erlang.nif_error(:nif_not_loaded)
   def standard(), do: :erlang.nif_error(:nif_not_loaded)
 
-  def emplace_black(_board, _pos), do: :erlang.nif_error(:nif_not_loaded)
-  def emplace_white(_board, _pos), do: :erlang.nif_error(:nif_not_loaded)
-  def emplace(b, p, :black), do: emplace_black(b, p)
-  def emplace(b, p, :white), do: emplace_white(b, p)
-
   def put_black(_board, _pos), do: :erlang.nif_error(:nif_not_loaded)
   def put_white(_board, _pos), do: :erlang.nif_error(:nif_not_loaded)
   def put(b, p, :black), do: put_black(b, p)
   def put(b, p, :white), do: put_white(b, p)
+
+  def set_black(_board, _pos), do: :erlang.nif_error(:nif_not_loaded)
+  def set_white(_board, _pos), do: :erlang.nif_error(:nif_not_loaded)
+  def set(b, p, :black), do: set_black(b, p)
+  def set(b, p, :white), do: set_white(b, p)
 
   def remove(_board, _pos), do: :erlang.nif_error(:nif_not_loaded)
 

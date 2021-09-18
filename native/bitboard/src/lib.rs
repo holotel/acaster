@@ -44,27 +44,9 @@ fn standard() -> Board {
     OthelloBoard::standard().into()
 }
 
-fn emplace(board: Board, pos: u64, s: Stone) -> (Atom, Board) {
-    let mut board: OthelloBoard = board.clone().into();
-    match board.place_stone(s, pos) {
-        Ok(()) => (atoms::ok(), board.into()),
-        Err(_) => (atoms::error(), board.into()),
-    }
-}
-
-#[rustler::nif]
-fn emplace_black(board: Board, pos: u64) -> (Atom, Board) {
-    emplace(board, pos, Stone::Black)
-}
-
-#[rustler::nif]
-fn emplace_white(board: Board, pos: u64) -> (Atom, Board) {
-    emplace(board, pos, Stone::White)
-}
-
 fn put(board: Board, pos: u64, s: Stone) -> (Atom, Board) {
     let mut board: OthelloBoard = board.clone().into();
-    match board.place_stone_unchecked(s, pos) {
+    match board.place_stone(s, pos) {
         Ok(()) => (atoms::ok(), board.into()),
         Err(_) => (atoms::error(), board.into()),
     }
@@ -78,6 +60,22 @@ fn put_black(board: Board, pos: u64) -> (Atom, Board) {
 #[rustler::nif]
 fn put_white(board: Board, pos: u64) -> (Atom, Board) {
     put(board, pos, Stone::White)
+}
+
+fn set(board: Board, pos: u64, s: Stone) -> (Atom, Board) {
+    let mut board: OthelloBoard = board.clone().into();
+    let _ = board.place_stone_unchecked(s, pos);
+    (atoms::ok(), board.into())
+}
+
+#[rustler::nif]
+fn set_black(board: Board, pos: u64) -> (Atom, Board) {
+    set(board, pos, Stone::Black)
+}
+
+#[rustler::nif]
+fn set_white(board: Board, pos: u64) -> (Atom, Board) {
+    set(board, pos, Stone::White)
 }
 
 #[rustler::nif]
@@ -123,10 +121,10 @@ rustler::init!(
     [
         empty,
         standard,
-        emplace_black,
-        emplace_white,
         put_black,
         put_white,
+        set_black,
+        set_white,
         remove,
         moves_for_black,
         moves_for_white,

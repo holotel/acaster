@@ -32,7 +32,11 @@ defmodule Ring do
 
   def start_link(name) do
     IO.puts(name)
-    GenStateMachine.start(__MODULE__, {:a, nil})
+    GenStateMachine.start(__MODULE__, name)
+  end
+
+  def init(name) do
+    {:ok, :a, name}
   end
 
   def handle_event({:call, from}, :get, s, data) do
@@ -58,13 +62,23 @@ end
 ```
 
 ```elixir
-{:ok, machine} = Ring.start_link(:ok)
+{:ok, machine} = Ring.start_link("wololoy")
 ```
 
 ```elixir
-machine |> GenStateMachine.call(:get)
+IO.inspect(machine |> GenStateMachine.call(:get))
+machine |> GenStateMachine.cast({:set, "otto"})
+IO.inspect(machine |> GenStateMachine.call(:get))
 machine |> GenStateMachine.cast(:go)
-machine |> GenStateMachine.call(:get)
+IO.inspect(machine |> GenStateMachine.call(:get))
+machine |> GenStateMachine.cast(:go)
+IO.inspect(machine |> GenStateMachine.call(:get))
+machine |> GenStateMachine.cast(:go)
+IO.inspect(machine |> GenStateMachine.call(:get))
+machine |> GenStateMachine.cast({:set, :bebong})
+IO.inspect(machine |> GenStateMachine.call(:get))
+machine |> GenStateMachine.cast(:go)
+IO.inspect(machine |> GenStateMachine.call(:get))
 ```
 
 ```elixir
