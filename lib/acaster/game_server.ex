@@ -10,11 +10,21 @@ defmodule Acaster.GameServer do
   alias Acaster.Game.TimeControl
   alias Acaster.BoardState
 
-  def start_link(%BoardState{} = bs) do
-    GenStateMachine.start_link(
-      GameServer,
-      bs
-    )
+  ### Client
+  def start_link({name, %BoardState{} = state}) do
+    case Swarm.register_name(
+           name,
+           DynamicSupervisor,
+           :start_child,
+           [Acaster.MatcherSupervisor, {GenStateMachine, {GameServer, state}}]
+         ) do
+      {:ok, pid} ->
+        :ok = Swarm.join(:matcher_server, pid)
+        {:ok, pid}
+
+      {:error, e} ->
+        {:error, e}
+    end
   end
 
   ### Server
@@ -40,9 +50,22 @@ defmodule Acaster.GameServer do
     end
   end
 
+  def vote_start(name, c) do
+    GenStateMachine.cast({:via, :swarm, name}, {:vote_start, c})
+  end
+
+  def vote_cancel(name, c) do
+    GenStateMachine.cast({:via, :swarm, name}, {:vote_cancel, c})
+  end
+
+  def put(name, pos, c) do
+    GenStateMachine.cast({:via, :swarm, name}, {:put, pos, c})
+  end
+
+  # Server
   @impl true
   def init(bs) do
-    Process.send_after(self(), :commence_timeout, 15_000)
+    Process.send_after(self(), :commence_timeout, 20_000)
     {:ok, :not_started, {bs, []}}
   end
 
@@ -68,14 +91,6 @@ defmodule Acaster.GameServer do
   end
 
   @impl true
-  def handle_event({:call, _from}, {:put, p}, :not_started, {bs, [q]})
-      when p != q do
-    {:ok, tc, rem} = bs.tc |> TimeControl.stop(bs.turn)
-    Process.send_after(self(), {:turn_timeout, bs.board}, rem)
-    {:next_state, :playing, {%BoardState{bs | :tc => tc}, []}}
-  end
-
-  @impl true
   def handle_event(
         :info,
         {:turn_timeout, board},
@@ -86,10 +101,9 @@ defmodule Acaster.GameServer do
   end
 
   @impl true
-  def handle_event({:call, _}, {:emplace, pos, turn}, :playing, {%{:turn => turn} = g, h}) do
+  def handle_event({:call, _}, {:put, pos, turn}, :playing, {%{:turn => turn} = g, h}) do
     {:ok, board} = g.board |> Bitboard.put(pos, turn)
     {:ok, tc, _} = g.tc |> TimeControl.stop(turn)
-    {:next_state, :playing, {g, [{turn, pos, g.board} | h]}}
 
     case next_mover(board, turn) do
       :none ->

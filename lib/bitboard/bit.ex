@@ -7,19 +7,16 @@ defmodule Bitboard.Bit do
   def to_rc(v), do: {div(msb_p(v), 8), rem(msb_p(v), 8)}
   def from_rc({r, c}), do: 1 <<< (8 * r + c)
 
-  def from_str(<<c, r>>) when c in 0x41..0x48 and r in 0x31..0x38,
-    do: 1 <<< (8 * (r - 0x31) + (c - 0x41))
+  def from_an(<<c, r>>) when c in ?A..?H and r in ?1..?8,
+    do: 1 <<< (8 * (r - ?1) + (c - ?A))
 
-  def from_str(<<c, r>>) when c in 0x61..0x68 and r in 0x31..0x38,
-    do: 1 <<< (8 * (r - 0x31) + (c - 0x61))
+  def from_an(<<c, r>>) when c in ?a..?h and r in ?1..?8,
+    do: 1 <<< (8 * (r - ?1) + (c - ?a))
 
-  def to_str(v) when is_integer(v) do
+  def to_an(v) when is_integer(v) do
     {r, c} = to_rc(v)
     <<c + 0x41, r + 0x31>>
   end
 
-  def sigil_b(s, []), do: from_str(s)
-
-  def sigil_B(<<>>, []), do: []
-  def sigil_B(<<c, r, rest::binary>>, []), do: [from_str(<<c, r>>) | sigil_B(rest, [])]
+  def sigil_a(s, []), do: from_an(s)
 end

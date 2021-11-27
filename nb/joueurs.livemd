@@ -1,0 +1,53 @@
+# joueurs.txt
+
+## Parsing
+
+```elixir
+defmodule Player do
+  defstruct [:id, :name, :country, :rating]
+end
+```
+
+```elixir
+joueurs =
+  File.read!(Path.expand("~/jou.txt"))
+  |> String.split("\n", trim: true)
+```
+
+```elixir
+defmodule Joueurs do
+  def parse(lines), do: p_lines(lines, :nc)
+
+  defp p_lines([<<"%", _::binary>> | t], c), do: p_lines(t, c)
+
+  defp p_lines([<<"pays = ", c::binary>> | t], _),
+    do: p_lines(t, c |> String.downcase() |> String.to_atom())
+
+  defp p_lines([line | t], c), do: [p_player(c, line) | p_lines(t, c)]
+  defp p_lines([], _), do: []
+
+  defp p_player(c, line) do
+    {idn, r} =
+      case String.split(line, "%") do
+        [idn] ->
+          {idn, nil}
+
+        [idn, r] ->
+          {r, ""} = Integer.parse(r |> String.trim_leading("_<") |> String.trim_trailing(">"))
+          {idn, r}
+      end
+
+    [id, name] = idn |> String.trim() |> String.split(" ", parts: 2)
+    {id, ""} = Integer.parse(id)
+    %Player{id: id, country: c, name: name, rating: r}
+  end
+end
+```
+
+```elixir
+players =
+  joueurs
+  |> Joueurs.parse()
+  |> Enum.filter(&(&1.rating >= 0 && &1.rating))
+  |> Enum.sort_by(&(-&1.rating))
+```

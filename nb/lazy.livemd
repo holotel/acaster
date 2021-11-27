@@ -1,0 +1,17 @@
+# lazy
+
+## Section
+
+```elixir
+defmodule M do
+  def ones(), do: [1 | &M.ones/0]
+end
+```
+
+```elixir
+[_ | t] = M.ones()
+```
+
+```elixir
+t.()
+```

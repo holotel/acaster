@@ -10,7 +10,7 @@ IO.puts(board)
 ```
 
 ```elixir
-{:ok, board} = board |> Bitboard.emplace(~b"f5", :black)
+{:ok, board} = board |> Bitboard.put(~b"f5", :black)
 IO.puts(board)
 ```
 
@@ -19,8 +19,8 @@ board |> Bitboard.moves_for(:white) |> Bitboard.spread() |> Enum.map(&to_str/1)
 ```
 
 ```elixir
-{:ok, board} = board |> Bitboard.emplace(~b"F4", :white)
-{:ok, board} = board |> Bitboard.emplace(~b"E3", :black)
+{:ok, board} = board |> Bitboard.put(~b"F4", :white)
+{:ok, board} = board |> Bitboard.put(~b"E3", :black)
 IO.puts(board)
 ```
 

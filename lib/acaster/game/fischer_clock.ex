@@ -1,6 +1,6 @@
 defmodule Acaster.Game.FischerClock do
   alias __MODULE__
-  defstruct [:remaining, :increment, :grace, :start]
+  defstruct [:remaining, increment: 0, grace: 200, start: nil]
 
   def stop(%FischerClock{:start => nil}, _), do: {:error, "not started"}
 

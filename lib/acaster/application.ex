@@ -17,13 +17,17 @@ defmodule Acaster.Application do
       AcasterWeb.Telemetry,
       # Start the PubSub system
       {Phoenix.PubSub, name: Acaster.PubSub},
+
       # Setup clustering
       {Cluster.Supervisor, [topologies, [name: Acaster.ClusterSupervisor]]},
+
+      # Setup matcher supervisor
+      {DynamicSupervisor, name: Acaster.MatcherSupervisor, strategy: :one_for_one},
       # Setup game supervisor
       {DynamicSupervisor, name: Acaster.GameSupervisor, strategy: :one_for_one},
+
       # Start the Endpoint (http/https)
       AcasterWeb.Endpoint
-      # Start a worker by calling: Acaster.Worker.start_link(arg)
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

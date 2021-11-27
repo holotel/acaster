@@ -1,0 +1,17 @@
+<div class="flex flex-col">
+    <div>email: <%= @current_user.email %></div>
+    <div>id: <%= @current_user.id %></div>
+
+    <%= if @tix do %>
+        Ticket: <%= @tix %>
+    <% end %>
+    <div class="flex flex-row">
+        <button
+            class="mx-auto px-8 bg-indigo-500 text-white px-3 py-2 rounded-md text-sm font-medium disabled:opacity-50"
+            phx-click="match"
+            {@fm_attr}
+        >
+            find match
+        </button>
+    </div>
+</div>

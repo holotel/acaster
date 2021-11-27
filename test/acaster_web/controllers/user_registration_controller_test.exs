@@ -3,7 +3,7 @@ defmodule AcasterWeb.UserRegistrationControllerTest do
 
   import Acaster.AccountsFixtures
 
-  describe "GET /users/register" do
+  describe "GET /register" do
     test "renders registration page", %{conn: conn} do
       conn = get(conn, Routes.user_registration_path(conn, :new))
       response = html_response(conn, 200)
@@ -18,7 +18,7 @@ defmodule AcasterWeb.UserRegistrationControllerTest do
     end
   end
 
-  describe "POST /users/register" do
+  describe "POST /register" do
     @tag :capture_log
     test "creates account and logs the user in", %{conn: conn} do
       email = unique_user_email()

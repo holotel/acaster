@@ -1,10 +1,13 @@
 defmodule Acaster.GameSupervisor do
-  def start_game(%{id: id} = config) do
-    Swarm.register_name(
-      id,
-      DynamicSupervisor,
-      :start_child,
-      [Acaster.GameSupervisor, {GameServer, config}]
-    )
+  def child_spec(opts) do
+    name = Keyword.get(opts, :name, GameServer)
+    player = Keyword.fetch!(opts, :player)
+
+    %{
+      id: "#{GameServer}_#{name}",
+      start: {GameServer, :start_link, [name, player]},
+      shutdown: 10_000,
+      restart: :transient
+    }
   end
 end

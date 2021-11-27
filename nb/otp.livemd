@@ -21,48 +21,53 @@ end
 ```
 
 ```elixir
-GameSupervisor.start_link(:ok)
+GameSupervisor.start_link([])
 ```
 
 ```elixir
 defmodule Ring do
-  use GenStateMachine
+  use GenServer
 
   alias __MODULE__
 
+  def child_spec(name) do
+    %{
+      id: "#{GameServer}_#{name}",
+      start: {GenServer, :start_link, [Ring, name, [name: {:via, :swarm, name}]]},
+      shutdown: 10_000,
+      restart: :transient
+    }
+  end
+
   def start_link(name) do
-    IO.puts(name)
-    GenStateMachine.start(__MODULE__, name)
+    Swarm.register_name(
+      "name",
+      DynamicSupervisor,
+      :start_child,
+      [GameSupervisor, {Ring, name}]
+    )
   end
 
   def init(name) do
-    {:ok, :a, name}
+    {:ok, {name, name}}
   end
 
-  def handle_event({:call, from}, :get, s, data) do
-    {:keep_state_and_data, [{:reply, from, {s, data}}]}
+  def handle_call(:get, _from, s) do
+    {:reply, s, s}
   end
 
-  def handle_event(:cast, {:set, v}, s, _data) do
-    {:next_state, s, v}
+  def handle_cast({:set_l, v}, {_, r}) do
+    {:noreply, {v, r}}
   end
 
-  def handle_event(:cast, :go, :a, data) do
-    {:next_state, :b, data}
-  end
-
-  def handle_event(:cast, :go, :b, data) do
-    {:next_state, :c, data}
-  end
-
-  def handle_event(:cast, :go, :c, data) do
-    {:next_state, :a, data}
+  def handle_cast({:set_r, v}, {l, _}) do
+    {:noreply, {l, v}}
   end
 end
 ```
 
 ```elixir
-{:ok, machine} = Ring.start_link("wololoy")
+Ring.start_link("bebong")
 ```
 
 ```elixir
